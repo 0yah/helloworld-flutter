@@ -22,8 +22,9 @@ class _TextInputWidgetState extends State<TextInputWidget> {
 
   void click() {
 
+ widget.callback(controller.text);
+   
     FocusScope.of(context).unfocus();
-    widget.callback(controller.text);
     controller.clear();
 
     

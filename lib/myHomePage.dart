@@ -1,11 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'textInput.dart';
 import 'post.dart';
 import 'postList.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  final String name;
+  MyHomePage(this.name);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void newPost(String text) {
     this.setState(() {
       this.text = text;
-      posts.add(new Post(text, "Ian"));
+      posts.add(new Post(text, widget.name));
     });
   }
 
