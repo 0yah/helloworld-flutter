@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hello/auth.dart';
 import 'package:hello/myHomePage.dart';
 
 class LoginPage extends StatelessWidget {
@@ -18,37 +20,55 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String name="";
-
+  String name = "";
+  User? user;
   TextEditingController controller = new TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    signOutGoogle();
+  }
+
   void click() {
-    this.name = controller.text;
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MyHomePage(this.name)));
+    signInWithGoogle().then((user) => {
+          this.user = user,
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MyHomePage(user!.displayName.toString())))
+        });
+  }
+
+  Widget loginButton() {
+    return OutlineButton(
+      onPressed: this.click,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
+      splashColor: Colors.grey,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Image(image: AssetImage('assets/google_logo.png'), height: 35),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(color: Colors.grey, fontSize: 25),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-        alignment: Alignment.center,
-        child: Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              controller: this.controller,
-              decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  labelText: "Type Your Name:",
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 5)),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.check),
-                    onPressed: this.click,
-                    tooltip: "Submit",
-                    splashColor: Colors.blue,
-                  )),
-            )));
+    return Align(alignment: Alignment.center, child: loginButton());
   }
 }
-
-
