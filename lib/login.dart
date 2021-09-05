@@ -37,7 +37,7 @@ class _BodyState extends State<Body> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      MyHomePage(user!.displayName.toString())))
+                      MyHomePage(user!)))
         });
   }
 
